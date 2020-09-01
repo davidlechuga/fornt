@@ -1,0 +1,25 @@
+@import '../../scss/index.scss';
+
+.header {
+	position: relative;
+	border-bottom: 1px solid $background-light;
+	padding: 12px 0;
+	background-color: $background-light;
+	z-index: 1;
+	background :url("../../assets/imagenes/stars.svg"), #1b1b25;
+
+	&__logo {
+		display: flex !important;
+		align-items: center;
+	}
+
+	.ui.grid > div {
+		align-self: center;
+		text-align: center;
+	}
+
+	img {
+		height: 70px;
+		border-radius: 80px;
+	}
+}
