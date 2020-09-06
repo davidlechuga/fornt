@@ -12,7 +12,7 @@ import Auth from './pages/Auth';
 //Context
 import AuthContext from './context/AuthContext';
 //Utils
-import { getToken, decodeToken } from './utils/token';
+import { getToken, decodeToken, removeToken } from './utils/token';
 
 // Components
 
@@ -34,7 +34,9 @@ function App() {
 	}, []);
 
 	const logout = () => {
-		console.log('cerrar sesion');
+		removeToken();
+		setAuth(null);
+
 	};
 
 	const setUser = (user) => {

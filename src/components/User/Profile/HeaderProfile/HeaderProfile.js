@@ -1,13 +1,31 @@
 // Frameworks functions
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 // Frameworks and local styles
-import { Grid, Image } from 'semantic-ui-react';
+import { Button} from 'semantic-ui-react';
 import './HeaderProfile.scss';
 
-export default function HeaderProfile() {
+export default function HeaderProfile(props) {
+    const { getUser, auth, handleModal } = props;
+
+
+
     return (
-        <div>
-            <h1>HProfile</h1>
-        </div>
-    )
+        <Fragment>
+            <div className="header-profile">
+                <h2> {getUser.username} </h2>
+
+                {getUser.username === auth.username ? (
+                    <Button onClick={() => handleModal("settings")}>
+                        Ajustes
+                    </Button>  
+                ) : (
+                    <Button>
+                        Seguir
+                    </Button>     
+                ) } 
+                
+            </div>
+                
+        </Fragment>
+       )
 }
