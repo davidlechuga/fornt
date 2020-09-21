@@ -14,20 +14,21 @@ import ModalBasic from '../../Modal/ModalBasic';
 import AvatarForm from '../AvatarForm';
 import HeaderProfile from './HeaderProfile'
 import SettingsForm from '../SettingsForm';
+import Followers from './Followers';
 //Hooks
 import userAuth from '../../../hooks/useAuth';
 
 export default function Profile(props) {
 	// console.log(props);
-	const { username } = props;
+	const { username, totalPublications } = props;
 	// por de regla los hooks van en un top level
 	const { auth } = userAuth();
 	// Modal Dinamico segun click en en un componente
-	const [ showModal, setShowModal ] = useState(false);
-	const [ titleModal, setTitleModal ] = useState(' ');
+	const [showModal, setShowModal] = useState(false);
+	const [titleModal, setTitleModal] = useState(' ');
 	const [childenModal, setChildenModal] = useState(null);
 	// Encontrar foto de username
-	const { data, loading, error } = useQuery(GET_USER, {
+	const { data, loading, error, refetch } = useQuery(GET_USER, {
 		variables: { username }
 	});
 
@@ -41,7 +42,7 @@ export default function Profile(props) {
 			case 'avatar':
 				//crear 3 estados 1-. (titulo de la card) 2-. (guardar el children del modal) 3-. (setear el modal)
 				setTitleModal('Cambiar foto de Perfil');
-				setChildenModal(<AvatarForm setShowModal={setShowModal} auth= {auth} />);
+				setChildenModal(<AvatarForm setShowModal={setShowModal} auth={auth} />);
 				setShowModal(true);
 				break;
 			case 'settings':
@@ -51,12 +52,14 @@ export default function Profile(props) {
 						setShowModal={setShowModal}
 						setTitleModal={setTitleModal}
 						setChildenModal={setChildenModal}
+						getUser={getUser}
+						refetch={refetch}
 					/>
 				);
 				setShowModal(true);
 
-				break;	
-			
+				break;
+
 			default:
 				break;
 		}
@@ -70,7 +73,7 @@ export default function Profile(props) {
 			<Grid className="profile">
 				<Grid.Column width={5} className="profile__left">
 					<Image
-						src={ getUser.avatar ? getUser.avatar : ImageNoFound}
+						src={getUser.avatar ? getUser.avatar : ImageNoFound}
 						avatar
 						alt="twitgov-avatar"
 						// validamos el auth del usuarioal para abrir el modal del perfil.
@@ -83,13 +86,16 @@ export default function Profile(props) {
 						auth={auth}
 						handleModal={handleModal}
 					/>
-					<div>Followers</div>
+
+					<Followers username={username} totalPublications={totalPublications} />
+
+
 					<div className="other">
 						<p className="name"> {getUser.name} </p>
 						{getUser.siteWeb && (
 							// Generamos la condición de que si existe siteWeb lop renderize
 							<a href={getUser.siteWeb} className="siteWeb"
-							   rel="noopener noreferrer" target="_blank">
+								rel="noopener noreferrer" target="_blank">
 								{getUser.siteWeb}
 							</a>
 						)}

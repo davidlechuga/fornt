@@ -1,30 +1,30 @@
 // Frameworks functions
 import React, { Fragment, useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone'
-import {useMutation} from '@apollo/client'
+import { useMutation } from '@apollo/client'
 // Frameworks and local styles
 import { Button } from 'semantic-ui-react';
-import {toast} from 'react-toastify'
+import { toast } from 'react-toastify'
 import './AvatarForm.scss';
 // Queryes or Mutation
-import {UPDATE_AVATAR, GET_USER, DELETE_AVATAR} from '../../../gql/user'
+import { UPDATE_AVATAR, GET_USER, DELETE_AVATAR } from '../../../gql/user'
 
 export default function AvatarForm(props) {
-	// console.log(props);
+    // console.log(props);
     const { setShowModal, auth } = props;
     const [loading, setLoading] = useState(false)
 
     const [updateAvatar] = useMutation(UPDATE_AVATAR, {
-        update(cache, { data: { updateAvatar }}) {
+        update(cache, { data: { updateAvatar } }) {
             // console.log(updateAvatar);
             const { getUser } = cache.readQuery({
                 query: GET_USER,
-                variables: {username: auth.username},
+                variables: { username: auth.username },
             });
             cache.writeQuery({
                 query: GET_USER,
                 variables: { username: auth.username },
-                data: { getUser: {...getUser, avatar: updateAvatar.urlAvatar} },
+                data: { getUser: { ...getUser, avatar: updateAvatar.urlAvatar } },
             });
         },
     });
@@ -39,14 +39,14 @@ export default function AvatarForm(props) {
                 query: GET_USER,
                 variables: { username: auth.username },
                 data: {
-                    getUser: {...getUser, avatar: "" },
+                    getUser: { ...getUser, avatar: "" },
                 }
             })
         }
     });
-    
-    const onDrop = useCallback( async (acceptedFile) => {
-            // console.log(acceptedFile);
+
+    const onDrop = useCallback(async (acceptedFile) => {
+        // console.log(acceptedFile);
         const file = acceptedFile[0];
         try {
             setLoading(true)
@@ -55,8 +55,8 @@ export default function AvatarForm(props) {
             const result = await updateAvatar({ variables: { file } });
             // console.log(result);
             const { data } = result;
-    
-            if(!data.updateAvatar.status){
+
+            if (!data.updateAvatar.status) {
                 toast.warning("Error al actualizar el avatar");
                 setLoading(false)
             } else {
@@ -66,14 +66,12 @@ export default function AvatarForm(props) {
         } catch (error) {
             console.log(error);
         }
-        },
-        [],
-    );
+    }, []);
     //useDropZone nos devuleve propiedades por eso el destructuring
     const { getRootProps, getInputProps } = useDropzone({
         accept: "image/jpeg, image/png",
         noKeyboard: true,
-        multiple:false,
+        multiple: false,
         onDrop,
     })
 
@@ -92,18 +90,18 @@ export default function AvatarForm(props) {
             console.log(error);
         }
     }
-	return (
-		<Fragment>
-			<div className="avatar-form">
+    return (
+        <Fragment>
+            <div className="avatar-form">
                 <Button {...getRootProps()}
                     loading={loading}
                 >
                     Cargar una foto
                 </Button>
-				<Button onClick={onDeleteAvatar }> Eliminar foto actual</Button>
-				<Button onClick={() => setShowModal(false)}> Cancelar</Button>
-                <input {...getInputProps() } />
+                <Button onClick={onDeleteAvatar}> Eliminar foto actual</Button>
+                <Button onClick={() => setShowModal(false)}> Cancelar</Button>
+                <input {...getInputProps()} />
             </div>
-		</Fragment>
-	);
+        </Fragment>
+    );
 }

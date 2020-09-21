@@ -34,26 +34,33 @@ export const GET_USER = gql`
 	}
 `;
 
-
 export const UPDATE_AVATAR = gql`
 	mutation updateAvatar($file: Upload) {
-		updateAvatar(file: $file){
+		updateAvatar(file: $file) {
 			status
 			urlAvatar
 		}
 	}
-
 `;
 
 export const DELETE_AVATAR = gql`
 	mutation deleteAvatar {
 		deleteAvatar
 	}
-
 `;
 
 export const UPDATE_USER = gql`
-	mutation updateUser($input: UserUpdateInput){
+	mutation updateUser($input: UserUpdateInput) {
 		updateUser(input: $input)
+	}
+`;
+
+export const SEARCH = gql`
+	query search($search: String) {
+		search(search: $search) {
+			name
+			username
+			avatar
+		}
 	}
 `;

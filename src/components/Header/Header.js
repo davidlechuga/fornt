@@ -9,6 +9,7 @@ import Logo from '../../assets/logos/twitgov.png';
 
 //Components
 import RightHeader from './RightHeader';
+import Search from './Search';
 
 export default function Header() {
 	return (
@@ -21,7 +22,7 @@ export default function Header() {
 						</Link>
 					</Grid.Column>
 					<Grid.Column width={10}>
-						<p>Buscador</p>
+						<Search />
 					</Grid.Column>
 					<Grid.Column width={3}>
 						<RightHeader />

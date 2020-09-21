@@ -1,0 +1,25 @@
+@import '../../../../scss/index.scss';
+
+.comments {
+    overflow-y: scroll;
+    bottom: 150px;
+    position: relative;
+    
+    .comment {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        border-bottom: 1px solid $border-grey;
+        color: $font-dark;
+
+        img{
+            margin-right: 15px !important;
+        }
+        p{
+            margin: 0;
+            &:first-of-type{
+                font-weight: bold;
+            }
+        }
+    }
+}

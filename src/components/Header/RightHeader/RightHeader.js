@@ -1,5 +1,5 @@
 // Frameworks functions
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 // Queries or mutationes
@@ -11,9 +11,13 @@ import './RightHeader.scss';
 import useAuth from '../../../hooks/useAuth';
 //Assets
 import ImageNoFound from '../../../assets/imagenes/avatar.png';
+//components
+import ModalUpload from '../../Modal/ModalUpload';
 
 
 export default function RightHeader() {
+
+	const [showModal, setShowModal] = useState(false)
 	// const data = useAuth();
 	const { auth } = useAuth();
 	// console.log(data);
@@ -22,7 +26,7 @@ export default function RightHeader() {
 	});
 
 	if (loading || error) return null;
-	const { getUser } = data;	
+	const { getUser } = data;
 
 	return (
 		<Fragment>
@@ -30,12 +34,14 @@ export default function RightHeader() {
 				<Link to="/">
 					<Icon name="home" />
 				</Link>
-				<Icon name="plus" />
+				<Icon onClick={() => setShowModal(true)} name="plus" />
 				<Link to={`/${auth.username}`}>
-					<Image src={ getUser.avatar ? getUser.avatar : ImageNoFound}
+					<Image src={getUser.avatar ? getUser.avatar : ImageNoFound}
 						avatar alt="avatar twitgov" />
 				</Link>
 			</div>
+
+			<ModalUpload show={showModal} setShow={setShowModal} />
 		</Fragment>
 	);
 }

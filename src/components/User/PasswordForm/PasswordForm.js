@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react'
 import { useMutation } from '@apollo/client';
 // Frameworks and local styles
-import { Form, Button, Input } from 'semantic-ui-react';
+import { Form, Button} from 'semantic-ui-react';
 import './PasswordForm.scss';
 import { toast  }  from 'react-toastify'
 // Forms Frameworks
